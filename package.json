@@ -1,0 +1,12 @@
+{
+    "name": "tuya-grafana-connector",
+    "dependencies": {
+        "dotenv": "16.5.0",
+        "express": "^5.1.0",
+        "request": "^2.88.2",
+        "tuyacloudnodejs": "^1.1.0"
+    },
+    "scripts": {
+        "start": "node main.js"
+    }
+}
