@@ -14,6 +14,7 @@ steps:
     entrypoint: "npx"
     args:
       [
+        "envsub",
         "-e",
         'accessKeyTemplate="$accessKey"',
         "-e",
