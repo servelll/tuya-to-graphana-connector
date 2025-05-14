@@ -16,5 +16,11 @@ RUN npm install --only=production
 # Copy local code to the container image.
 COPY . ./
 
+# Filleing recreated .env template
+RUN npm install -y envsub
+RUN npx envsub -e accessKeyTemplate="$accessKey" 
+    -e secretKeyTemplate="$secretKey" 
+    -e deviceIdTemplate="$deviceId" ./.env.template ./.env
+
 # Run the web service on container startup.
 CMD [ "npm", "start" ]
