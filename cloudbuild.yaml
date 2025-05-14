@@ -1,7 +1,6 @@
 steps:
   - name: "node"
-    entrypoint: "cmd"
-    args: ["ls"]
+    entrypoint: "ls"
 
   - name: "node"
     entrypoint: "npm"
