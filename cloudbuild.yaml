@@ -27,7 +27,7 @@ steps:
         ".env.template",
         ".env",
       ]
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+  - name: "gcloud"
     args: ["run", "deploy", "--source", "."]
     id: Deploy
     entrypoint: gcloud
