@@ -18,7 +18,7 @@ async function refresh() {
 
   // get an access token
   let data = await Tuya.token().get_new();
-  token = data.result.access_token;
+  token = data?.result?.access_token;
   return token;
 }
 
