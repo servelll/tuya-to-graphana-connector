@@ -1,0 +1,21 @@
+steps:
+  - name: "install dependencies"
+    entrypoint: "npm"
+    args: ["install"]
+  - name: "install envsub"
+    entrypoint: "npm"
+    args: ["install -y envsub"]
+  - name: "filling env"
+    entrypoint: "npx"
+    args:
+      [
+        '-e accessKeyTemplate="$accessKey"',
+        '-e secretKeyTemplate="$secretKey" ',
+        '-e deviceIdTemplate="$deviceId"',
+        ".env.template .env",
+      ]
+  - name: "starting node"
+    entrypoint: "npm"
+    args: ["run", "start"]
+options:
+  logging: CLOUD_LOGGING_ONLY
