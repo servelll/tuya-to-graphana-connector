@@ -1,7 +1,12 @@
 steps:
+  - name: "debug-ls"
+    entrypoint: "cmd"
+    args: ["ls"]
+
   - name: "install-dependencies"
     entrypoint: "npm"
     args: ["install"]
+
   - name: "install-envsub"
     entrypoint: "npm"
     args: ["install -y envsub"]
@@ -14,6 +19,7 @@ steps:
         '-e deviceIdTemplate="$deviceId"',
         ".env.template .env",
       ]
+
   - name: "starting-node"
     entrypoint: "npm"
     args: ["run", "start"]
