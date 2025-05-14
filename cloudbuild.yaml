@@ -5,7 +5,7 @@ steps:
   - name: "install-envsub"
     entrypoint: "npm"
     args: ["install -y envsub"]
-  - name: "filling env"
+  - name: "filling-env"
     entrypoint: "npx"
     args:
       [
