@@ -1,10 +1,12 @@
 steps:
   - name: "node"
     entrypoint: "ls"
+    id: "Debugging showing files"
     args: ["-a"]
 
   - name: "node"
     entrypoint: "npm"
+    id: "installing dependencies"
     args: ["i"]
 
   - name: "node"
@@ -12,6 +14,7 @@ steps:
     args: ["install", "envsub"]
   - name: "node"
     entrypoint: "npx"
+    id: "filling env file with template secrets"
     args:
       [
         "envsub",
@@ -24,7 +27,10 @@ steps:
         ".env.template",
         ".env",
       ]
-
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    args: ["app", "deploy"]
+    id: Deploy
+    entrypoint: gcloud
   #- name: "node"
   #  entrypoint: "npm"
   #  args: ["run", "start"]
