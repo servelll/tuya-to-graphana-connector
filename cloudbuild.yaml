@@ -14,10 +14,14 @@ steps:
     entrypoint: "npx"
     args:
       [
-        '-e accessKeyTemplate="$accessKey"',
-        '-e secretKeyTemplate="$secretKey" ',
-        '-e deviceIdTemplate="$deviceId"',
-        ".env.template .env",
+        "-e",
+        'accessKeyTemplate="$accessKey"',
+        "-e",
+        'secretKeyTemplate="$secretKey" ',
+        "-e",
+        'deviceIdTemplate="$deviceId"',
+        ".env.template",
+        ".env",
       ]
 
   - name: "node"
