@@ -27,7 +27,7 @@ steps:
         ".env.template",
         ".env",
       ]
-  - name: "gcloud"
+  - name: "node"
     args: ["run", "deploy", "--source", "."]
     id: Deploy
     entrypoint: gcloud
