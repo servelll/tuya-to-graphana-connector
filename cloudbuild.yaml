@@ -6,13 +6,10 @@ steps:
   - name: "node"
     entrypoint: "npm"
     args: ["i"]
-  - name: "node"
-    entrypoint: "ls"
-    args: ["-a"]
 
   - name: "node"
     entrypoint: "npm"
-    args: ["install envsub"]
+    args: ["install", "envsub"]
   - name: "node"
     entrypoint: "npx"
     args:
