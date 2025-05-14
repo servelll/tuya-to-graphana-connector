@@ -1,8 +1,8 @@
 steps:
-  - name: "install dependencies"
+  - name: "install-dependencies"
     entrypoint: "npm"
     args: ["install"]
-  - name: "install envsub"
+  - name: "install-envsub"
     entrypoint: "npm"
     args: ["install -y envsub"]
   - name: "filling env"
@@ -14,7 +14,7 @@ steps:
         '-e deviceIdTemplate="$deviceId"',
         ".env.template .env",
       ]
-  - name: "starting node"
+  - name: "starting-node"
     entrypoint: "npm"
     args: ["run", "start"]
 options:
