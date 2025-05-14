@@ -1,10 +1,11 @@
 steps:
   - name: "node"
     entrypoint: "ls"
+    args: ["-a"]
 
   - name: "node"
     entrypoint: "npm"
-    args: ["install"]
+    args: ["install -y"]
 
   - name: "node"
     entrypoint: "npm"
