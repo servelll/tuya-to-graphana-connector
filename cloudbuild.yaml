@@ -1,16 +1,16 @@
 steps:
-  - name: "debug-ls"
+  - name: "node"
     entrypoint: "cmd"
     args: ["ls"]
 
-  - name: "install-dependencies"
+  - name: "node"
     entrypoint: "npm"
     args: ["install"]
 
-  - name: "install-envsub"
+  - name: "node"
     entrypoint: "npm"
     args: ["install -y envsub"]
-  - name: "filling-env"
+  - name: "node"
     entrypoint: "npx"
     args:
       [
@@ -20,7 +20,7 @@ steps:
         ".env.template .env",
       ]
 
-  - name: "starting-node"
+  - name: "node"
     entrypoint: "npm"
     args: ["run", "start"]
 options:
