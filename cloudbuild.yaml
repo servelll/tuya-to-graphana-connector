@@ -5,7 +5,7 @@ steps:
 
   - name: "node"
     entrypoint: "npm"
-    args: ["install -y"]
+    args: ["i"]
 
   - name: "node"
     entrypoint: "npm"
