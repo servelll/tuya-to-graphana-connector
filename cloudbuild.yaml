@@ -9,7 +9,7 @@ steps:
 
   - name: "node"
     entrypoint: "npm"
-    args: ["install -y envsub"]
+    args: ["install envsub"]
   - name: "node"
     entrypoint: "npx"
     args:
