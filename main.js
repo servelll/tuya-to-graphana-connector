@@ -35,7 +35,8 @@ app.get("/status", async (req, res) => {
 
 app.get("/logs", async (req, res) => {
   // get device details
-  let parameters = { type: "1", start_time: "1", end_time: new Date().getTime().toString() };
+  let parameters = { type: "1,2,3,4,5,6,7,8,9", start_time: "1", end_time: new Date().getTime().toString() };
+  if (req.query.start_row_key) parameters.start_row_key = req.query.start_row_key;
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
   res.send(result);
 });
