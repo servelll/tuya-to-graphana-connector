@@ -11,29 +11,31 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8080;
 
-let device_id, token;
-async function refresh() {
+let device_id, token, expire_time;
+async function get_new_tokens() {
   // set some variables for the example
   device_id = config.deviceId;
 
   // get an access token
   let data = await Tuya.token().get_new();
   token = data?.result?.access_token;
+  expire_time = data?.t + data?.result?.expire_time - 30;
   return token;
 }
 
-app.get("/refresh", async (req, res) => {
-  let newToken = await refresh();
-  res.send("done refreshing, new access token = " + newToken);
-});
-
 app.get("/status", async (req, res) => {
+  // if token expired - get new
+  if (new Date().getTime() > expire_time) get_new_tokens();
+
   // get device details
   let result = await Tuya.devices(token).get_details(device_id);
   res.send(result);
 });
 
 app.get("/logs", async (req, res) => {
+  // if token expired - get new
+  if (new Date().getTime() > expire_time) get_new_tokens();
+
   // get device details
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
   if (req.query.start_row_key) parameters.start_row_key = req.query.start_row_key;
@@ -44,7 +46,6 @@ app.get("/logs", async (req, res) => {
 app.get("/", (req, res) => {
   res.send(
     `<h1>Tuya API</h1>
-    <a href='/refresh'>refresh</a>
     <a href='/status'>status</a></n>
     <a href='/logs'>logs</a>`
   );
@@ -55,6 +56,6 @@ app.get("/", (req, res) => {
 //result = await Tuya.devices(token).post_commands(device_id, commands);
 
 app.listen(port, () => {
-  refresh();
+  get_new_tokens();
   console.log(`Example app listening on port ${port}: http://localhost:${port}`);
 });
