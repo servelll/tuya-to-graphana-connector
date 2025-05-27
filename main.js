@@ -90,7 +90,7 @@ app.get("/logs2", async (req, res) => {
       }
     }
   }
-  res.send(logs);
+  res.send({ logs });
 });
 
 app.get("/", (req, res) => {
