@@ -40,6 +40,7 @@ app.get("/logs", async (req, res) => {
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
   if (req.query.start_row_key) parameters.start_row_key = req.query.start_row_key;
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
+  result.url = req.url;
   res.send(result);
 });
 
