@@ -38,7 +38,7 @@ app.get("/logs", async (req, res) => {
 
   // get device details
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
-  if (req.query.start_row_key) parameters.start_row_key = req.query.start_row_key;
+  if (req.headers.start_row_key) parameters.start_row_key = req.headers.start_row_key;
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
   result.url = req.url;
   res.send(result);
@@ -50,7 +50,7 @@ app.get("/logs2", async (req, res) => {
 
   // get device details
   let parameters = { type: "1,2,3,4,5,6,7,8,9", start_time: "1", end_time: new Date().getTime().toString() };
-  if (req.query.start_row_key) parameters.start_row_key = req.query.start_row_key;
+  if (req.headers.start_row_key) parameters.start_row_key = req.headers.start_row_key;
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
   let logs = result.result.logs;
 
