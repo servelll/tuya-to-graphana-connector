@@ -9,6 +9,7 @@ let Tuya = new TuyaCloud({
 
 const express = require("express");
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 8080;
@@ -34,6 +35,13 @@ app.get("/status", async (req, res) => {
   res.send(result);
 });
 
+function trimQuotes(str) {
+  if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
+    return str.slice(1, -1);
+  }
+  return str;
+}
+
 app.get("/logs", async (req, res) => {
   // if token expired - get new
   if (new Date().getTime() > expire_time) get_new_tokens();
@@ -42,7 +50,7 @@ app.get("/logs", async (req, res) => {
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
   if (req.headers.start_row_key) parameters.start_row_key = req.headers.start_row_key;
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
-  result.header = req.headers.start_row_key ?? "";
+  result.header = trimQuotes(req.headers.start_row_key) ?? "";
   result.body = req.body?.start_row_key ?? "";
   res.send(result);
 });
