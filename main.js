@@ -45,9 +45,13 @@ app.get("/logs", async (req, res) => {
 
   // get device details
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
-  if (req.headers.start_row_key) parameters.start_row_key = trimQuotes(req.headers.start_row_key ?? "");
+  if (req.headers.codes) parameters.codes = trimQuotes(req.headers.codes);
+  if (req.headers.start_row_key) parameters.start_row_key = trimQuotes(req.headers.start_row_key);
+  if (req.headers.start_time) parameters.start_time = trimQuotes(req.headers.start_time);
+  if (req.headers.end_time) parameters.end_time = trimQuotes(req.headers.end_time);
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
-  result.header = parameters.start_row_key;
+  result.start_row_key = parameters.start_row_key ?? "";
+  result.codes = parameters.codes ?? "";
   res.send(result);
 });
 
