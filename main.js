@@ -19,13 +19,25 @@ async function get_new_tokens() {
   // get an access token
   let data = await Tuya.token().get_new();
   token = data?.result?.access_token;
-  expire_time = data?.t + data?.result?.expire_time - 30;
+  expire_time = data?.result?.expire_time * 1000 + data?.t - 10000;
   return token;
 }
 
+app.get("/tokens", async (req, res) => {
+  const c = new Date();
+  res.send({
+    token,
+    expire_time,
+    current_time: c.getTime(),
+    diff: expire_time - c.getTime(),
+    expire_time_date: new Date(expire_time),
+    current_time_date: c,
+  });
+});
+
 app.get("/status", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) get_new_tokens();
+  if (new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
   let result = await Tuya.devices(token).get_details(device_id);
@@ -41,23 +53,25 @@ function trimQuotes(str) {
 
 app.get("/logs", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) get_new_tokens();
+  if (new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
-  let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString() };
+  let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString(), size: "10000" };
   if (req.headers.codes) parameters.codes = trimQuotes(req.headers.codes);
   if (req.headers.start_row_key) parameters.start_row_key = trimQuotes(req.headers.start_row_key);
   if (req.headers.start_time) parameters.start_time = trimQuotes(req.headers.start_time);
   if (req.headers.end_time) parameters.end_time = trimQuotes(req.headers.end_time);
+  if (req.headers.size) parameters.size = trimQuotes(req.headers.size);
   let result = await Tuya.devices(token).get_logs(device_id, parameters);
   result.start_row_key = parameters.start_row_key ?? "";
   result.codes = parameters.codes ?? "";
+  result.size = parameters.size ?? "";
   res.send(result);
 });
 
 app.get("/logs2", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) get_new_tokens();
+  if (new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
   let parameters = { type: "1,2,3,4,5,6,7,8,9", start_time: "1", end_time: new Date().getTime().toString() };
@@ -108,6 +122,7 @@ app.get("/logs2", async (req, res) => {
 app.get("/", (req, res) => {
   res.send(
     `<h1>Tuya API</h1>
+    <a href='/tokens'>tokens</a></n>
     <a href='/status'>status</a></n>
     <a href='/logs'>logs</a>
     <a href='/logs2'>logs2</a>
