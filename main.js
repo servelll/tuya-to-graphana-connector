@@ -11,7 +11,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8080;
 
-let device_id, token, expire_time;
+let device_id, token, expire_time, last_update_time;
 async function get_new_tokens() {
   // set some variables for the example
   device_id = config.deviceId;
@@ -20,6 +20,7 @@ async function get_new_tokens() {
   let data = await Tuya.token().get_new();
   token = data?.result?.access_token;
   expire_time = data?.result?.expire_time * 1000 + data?.t - 10000;
+  last_update_time = data?.t;
   return token;
 }
 
@@ -32,6 +33,7 @@ app.get("/tokens", async (req, res) => {
     diff: expire_time - c.getTime(),
     expire_time_date: new Date(expire_time),
     current_time_date: c,
+    last_update_time: new Date(last_update_time),
   });
 });
 
