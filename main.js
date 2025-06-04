@@ -21,7 +21,6 @@ async function get_new_tokens() {
   token = data?.result?.access_token;
   expire_time = data?.result?.expire_time * 1000 + data?.t - 10000;
   last_update_time = data?.t;
-  return token;
 }
 
 const conditionToUpDateTokens = () => !expire_time || Date.now() > expire_time;
@@ -138,7 +137,7 @@ app.get("/", (req, res) => {
 //let commands = { commands: [{ code: "switch_led", value: false }] };
 //result = await Tuya.devices(token).post_commands(device_id, commands);
 
-app.listen(port, () => {
-  get_new_tokens();
+app.listen(port, async () => {
+  await get_new_tokens();
   console.log(`Example app listening on port ${port}: http://localhost:${port}`);
 });
