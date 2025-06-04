@@ -39,7 +39,7 @@ app.get("/tokens", async (req, res) => {
 
 app.get("/status", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) await get_new_tokens();
+  if (!expire_time && new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
   let result = await Tuya.devices(token).get_details(device_id);
@@ -55,7 +55,7 @@ function trimQuotes(str) {
 
 app.get("/logs", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) await get_new_tokens();
+  if (!expire_time && new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
   let parameters = { type: "7", start_time: "1", end_time: new Date().getTime().toString(), size: "10000" };
@@ -73,7 +73,7 @@ app.get("/logs", async (req, res) => {
 
 app.get("/logs2", async (req, res) => {
   // if token expired - get new
-  if (new Date().getTime() > expire_time) await get_new_tokens();
+  if (!expire_time && new Date().getTime() > expire_time) await get_new_tokens();
 
   // get device details
   let parameters = { type: "1,2,3,4,5,6,7,8,9", start_time: "1", end_time: new Date().getTime().toString() };
